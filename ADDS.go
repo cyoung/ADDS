@@ -69,7 +69,7 @@ func GetADDSMETAR(ident string) ([]ADDSMETAR, error) {
 }
 
 func GetLatestADDSMETAR(ident string) (ret ADDSMETAR, err error) {
-	metars, errn := getADDSMETAR(ident)
+	metars, errn := GetADDSMETAR(ident)
 	if errn != nil {
 		return ret, errn
 	}
