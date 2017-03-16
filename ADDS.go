@@ -2,6 +2,7 @@ package ADDS
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -65,6 +66,10 @@ func GetADDSMETAR(ident string) ([]ADDSMETAR, error) {
 	// Parse 'body'.
 	err = xml.Unmarshal([]byte(body), &ret)
 
+	// Empty response? Typically happens with invalid identifiers.
+	if len(ret.Data.METARs) == 0 {
+		return ret.Data.METARs, errors.New("No results.")
+	}
 	return ret.Data.METARs, nil
 }
 
