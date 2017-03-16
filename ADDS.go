@@ -49,7 +49,7 @@ type ADDSResponse struct {
 	Data         ADDSData `xml:"data"`
 }
 
-func getADDSMETAR(ident string) ([]ADDSMETAR, error) {
+func GetADDSMETAR(ident string) ([]ADDSMETAR, error) {
 	var ret ADDSResponse
 	url := fmt.Sprintf("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=%s&hoursBeforeNow=2", ident)
 	resp, err := http.Get(url)
@@ -68,7 +68,7 @@ func getADDSMETAR(ident string) ([]ADDSMETAR, error) {
 	return ret.Data.METARs, nil
 }
 
-func getLatestADDSMETAR(ident string) (ret ADDSMETAR, err error) {
+func GetLatestADDSMETAR(ident string) (ret ADDSMETAR, err error) {
 	metars, errn := getADDSMETAR(ident)
 	if errn != nil {
 		return ret, errn
