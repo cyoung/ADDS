@@ -38,7 +38,6 @@ type ADDSResponse struct {
 }
 
 func GetADDSData(url string) (ADDSData, error) {
-	fmt.Printf("URL: %s\n", url)
 	var ret ADDSResponse
 	resp, err := http.Get(url)
 	if err != nil || !strings.HasPrefix(resp.Status, "200") {
