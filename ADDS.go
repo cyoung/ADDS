@@ -29,6 +29,7 @@ func (t *ADDSTime) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 type ADDSData struct {
 	METARs []ADDSMETAR `xml:"METAR"`
 	PIREPs []ADDSPIREP `xml:"AircraftReport"`
+	TAFs   []ADDSTAF   `xml:"TAF"`
 }
 
 type ADDSResponse struct {
@@ -60,6 +61,7 @@ func GetADDSData(url string) (ADDSData, error) {
 var reportFlags = map[string]string{
 	"metars":          "&mostRecentForEachStation=constraint",
 	"aircraftreports": "",
+	"tafs":            "&mostRecentForEachStation=constraint",
 }
 
 func urlADDSDataByIdent(dataSource string, ident string) string {
