@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"github.com/kellydunn/golang-geo"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -50,9 +51,8 @@ type ADDSResponse struct {
 	Data         ADDSData `xml:"data"`
 }
 
-func GetADDSMETAR(ident string) ([]ADDSMETAR, error) {
+func GetADDSMETARs(url string) ([]ADDSMETAR, error) {
 	var ret ADDSResponse
-	url := fmt.Sprintf("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=%s&hoursBeforeNow=2", ident)
 	resp, err := http.Get(url)
 	if err != nil || !strings.HasPrefix(resp.Status, "200") {
 		return ret.Data.METARs, err
@@ -73,8 +73,32 @@ func GetADDSMETAR(ident string) ([]ADDSMETAR, error) {
 	return ret.Data.METARs, nil
 }
 
-func GetLatestADDSMETAR(ident string) (ret ADDSMETAR, err error) {
-	metars, errn := GetADDSMETAR(ident)
+func GetADDSMETARsByIdent(ident string) ([]ADDSMETAR, error) {
+	url := fmt.Sprintf("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=%s&hoursBeforeNow=1.5", ident)
+	return GetADDSMETARs(url)
+}
+
+// Gets the most recent METARs that were obtained at least within the last 1.5 hours within a (lat, lng) defined rectangle.
+func GetLatestADDSMETARsInRect(bottomLeft, topRight *geo.Point) ([]ADDSMETAR, error) {
+	url := fmt.Sprintf("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&mostRecentForEachStation=constraint&hoursBeforeNow=1.25&minLat=%f&minLon=%f&maxLat=%f&maxLon=%f", bottomLeft.Lat(), bottomLeft.Lng(), topRight.Lat(), topRight.Lng())
+	return GetADDSMETARs(url)
+}
+
+// Gets the most recent METARs that were obtained at least within the last 1.5 hours within "radius" of "pt".
+func GetLatestADDSMETARsInRadiusOf(radius uint, pt *geo.Point) ([]ADDSMETAR, error) {
+	url := fmt.Sprintf("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&mostRecentForEachStation=constraint&hoursBeforeNow=1.25&radialDistance=%d;%f,%f", radius, pt.Lng(), pt.Lat())
+	return GetADDSMETARs(url)
+}
+
+// Gets the most recent METARs that were obtained at least within "route" staute miles of the defined route.
+// "route" is in the format "lng1,lat1;lng2,lat2;..." or "ident1;ident2;..."
+func GetLatestADDSMETARsAlongRoute(dist float64, route string) ([]ADDSMETAR, error) {
+	url := fmt.Sprintf("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&mostRecentForEachStation=constraint&hoursBeforeNow=1.25&flightPath=%f;%s", dist, route)
+	return GetADDSMETARs(url)
+}
+
+func GetLatestADDSMETARs(ident string) (ret ADDSMETAR, err error) {
+	metars, errn := GetADDSMETARsByIdent(ident)
 	if errn != nil {
 		return ret, errn
 	}
