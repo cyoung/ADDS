@@ -58,9 +58,9 @@ func GetADDSData(url string) (ADDSData, error) {
 }
 
 var reportFlags = map[string]string{
-	"metars":          "&mostRecentForEachStation=constraint",
+	"metars":          "&mostRecentForEachStation=constraint", // METARs: Always request most recent for each station.
 	"aircraftreports": "",
-	"tafs":            "&mostRecentForEachStation=constraint",
+	"tafs":            "&mostRecentForEachStation=constraint", // TAFs: Always request the most recent for each station.
 }
 
 func urlADDSDataByIdent(dataSource string, ident string) string {
