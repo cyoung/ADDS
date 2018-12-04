@@ -29,7 +29,7 @@ func GetLatestADDSTAFsInRect(bottomLeft, topRight *geo.Point) ([]ADDSTAF, error)
 	return GetADDSTAFs(urlLatestADDSDataInRect("tafs", bottomLeft, topRight))
 }
 
-// Gets the most recent TAFs that were obtained at least within the last 1.5 hours within "radius" of "pt".
+// Gets the most recent TAFs that were obtained at least within the last 1.5 hours within "radius" statute miles of "pt".
 func GetLatestADDSTAFsInRadiusOf(radius uint, pt *geo.Point) ([]ADDSTAF, error) {
 	return GetADDSTAFs(urlLatestADDSDataInRadiusOf("tafs", radius, pt))
 }

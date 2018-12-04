@@ -73,6 +73,7 @@ func urlLatestADDSDataInRect(dataSource string, bottomLeft, topRight *geo.Point)
 	return url
 }
 
+// Radius in statute miles.
 func urlLatestADDSDataInRadiusOf(dataSource string, radius uint, pt *geo.Point) string {
 	url := fmt.Sprintf("https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=%s&requestType=retrieve&format=xml&hoursBeforeNow=1.25&radialDistance=%d;%f,%f%s", dataSource, radius, pt.Lng(), pt.Lat(), reportFlags[dataSource])
 	return url

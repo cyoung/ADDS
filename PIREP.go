@@ -30,7 +30,7 @@ func GetLatestADDSPIREPsInRect(bottomLeft, topRight *geo.Point) ([]ADDSPIREP, er
 	return GetADDSPIREPs(urlLatestADDSDataInRect("aircraftreports", bottomLeft, topRight))
 }
 
-// Gets the most recent PIREPs that were obtained at least within the last 1.5 hours within "radius" of "pt".
+// Gets the most recent PIREPs that were obtained at least within the last 1.5 hours within "radius" statute miles of "pt".
 func GetLatestADDSPIREPsInRadiusOf(radius uint, pt *geo.Point) ([]ADDSPIREP, error) {
 	return GetADDSPIREPs(urlLatestADDSDataInRadiusOf("aircraftreports", radius, pt))
 }

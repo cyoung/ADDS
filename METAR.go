@@ -33,7 +33,7 @@ func GetLatestADDSMETARsInRect(bottomLeft, topRight *geo.Point) ([]ADDSMETAR, er
 	return GetADDSMETARs(urlLatestADDSDataInRect("metars", bottomLeft, topRight))
 }
 
-// Gets the most recent METARs that were obtained at least within the last 1.5 hours within "radius" of "pt".
+// Gets the most recent METARs that were obtained at least within the last 1.5 hours within "radius" statute miles of "pt".
 func GetLatestADDSMETARsInRadiusOf(radius uint, pt *geo.Point) ([]ADDSMETAR, error) {
 	return GetADDSMETARs(urlLatestADDSDataInRadiusOf("metars", radius, pt))
 }
